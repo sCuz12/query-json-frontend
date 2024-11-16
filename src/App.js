@@ -15,7 +15,7 @@ function App() {
   const [results, setResults] = useState({});
   const [queryInput, setQueryInput] = useState("")
   const [error, setError] = useState("")
-  const [recommendedQueries,setRecommendedQueries] = useState([])
+  const [recommendedQueries, setRecommendedQueries] = useState([])
 
   const handleFileUpload = async (uploadedFile) => {
     setJsonFile(uploadedFile[0])
@@ -23,20 +23,41 @@ function App() {
     setResults(null) //reset
 
     const formData = new FormData()
-    formData.append('json-file',uploadedFile[0])
+    formData.append('json-file', uploadedFile[0])
 
-    //send request to get recommended queries
-    const response = await fetch('http://localhost:4000/api/query-recommendations',{
-      method : 'POST',
-      headers : {
-        'Accept' : 'application/json',
-      },
-      body: formData,
-    })
+    try {
+      const storeFileResponse = await fetch('http://localhost:4000/api/store-file', {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json'
+        },
+        body: formData
+      })
+      
+      if (false == storeFileResponse.ok) {
+        const errorMessage = await storeFileResponse.text();
+        throw new Error(`File storage failed: ${errorMessage}`);
+      }
 
-    const {data} = await response.json()
+      console.log('File stored successfully:', storeFileResponse);
 
-    setRecommendedQueries(data)
+      //2. send request to get recommended queries
+      const response = await fetch('http://localhost:4000/api/query-recommendations', {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+        },
+        body: formData,
+      })
+
+      const { data } = await response.json()
+      
+      setRecommendedQueries(data)
+
+    } catch (error) {
+      console.log(error)
+    }
+
   }
 
   const handleQuerySubmit = async () => {
@@ -82,7 +103,6 @@ function App() {
   }
 
 
-
   return (
     <div className="App">
       <header className="App-header">
@@ -92,21 +112,21 @@ function App() {
 
 
             <div className='flex flex-col gap-1 p-4 border rounded-lg shadow-xl'>
-                <p className='flex items-start justify-start text-lg font-bold' >File</p>
-                <Divider style={{ borderTop: '0.1px solid gray' }} my="lg" />
-                <FileUpload
-                    onFileUpload={handleFileUpload}
-                    fileName={selectedFilename}
-                />
+              <p className='flex items-start justify-start text-lg font-bold' >File</p>
+              <Divider style={{ borderTop: '0.1px solid gray' }} my="lg" />
+              <FileUpload
+                onFileUpload={handleFileUpload}
+                fileName={selectedFilename}
+              />
             </div>
             {/*Recommended Queries*/}
             <div className="flex flex-col">
               {recommendedQueries && recommendedQueries.length > 0 && (
-                  <p className="items-start justify-start text-lg font-bold">Generated Quries</p>
+                <p className="items-start justify-start text-lg font-bold">Generated Quries</p>
               )}
-              <div className="grid grid-cols-2 xl:grid-cols-2 lg:grid-cols-2 w-full gap-2">
-                {recommendedQueries.map((item)=> (
-                    <QueriesTag onClick={recommendedQueryClicked} query={item}/>
+              <div className="grid w-full grid-cols-2 gap-2 xl:grid-cols-2 lg:grid-cols-2">
+                {recommendedQueries.map((item) => (
+                  <QueriesTag onClick={recommendedQueryClicked} query={item} />
                 ))}
               </div>
             </div>
@@ -115,18 +135,18 @@ function App() {
               <p className='flex items-start justify-start text-lg font-bold' >Query</p>
               <Divider style={{ borderTop: '0.1px solid gray' }} my="lg" />
               <QueryEditor
-              queryInput={queryInput}
-              setQueryInput={setQueryInput}
-              onSubmitQuery={handleQuerySubmit}
-            />
+                queryInput={queryInput}
+                setQueryInput={setQueryInput}
+                onSubmitQuery={handleQuerySubmit}
+              />
             </div>
 
             <div className="flex w-full border rounded-xl bg-[#002b36]">
               {results && results.length > 0 && (
-                <div className='results-box w-full text-sm'>
+                <div className='w-full text-sm results-box'>
                   <Title order={4} style={{ color: 'white' }}>Results</Title>
                   {/*<ReactJson src={results} theme="monokai" collapsed={true} enableClipboard={true} />*/}
-                  <JsonView  data={results} shouldExpandNode={allExpanded} style={darkStyles}/>
+                  <JsonView data={results} shouldExpandNode={allExpanded} style={darkStyles} />
                 </div>
               )}
             </div>

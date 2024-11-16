@@ -5,9 +5,8 @@ import {IconPlayerPlay} from "@tabler/icons-react";
 
 export default function QueryEditor({queryInput , setQueryInput,onSubmitQuery}) {
 
-
     return (
-        <Container className='w-full flex flex-col gap-4'>
+        <Container className='flex flex-col w-full gap-4'>
             <CodeEditor value={queryInput}
                 language="sql"
                 placeholder="Please enter your Query."
