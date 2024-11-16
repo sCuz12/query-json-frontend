@@ -4,12 +4,13 @@ import FileUpload from './components/FileUpload';
 import { Container, Divider, Title } from '@mantine/core';
 import QueryEditor from './components/QueryEditor';
 
-import ReactJson from 'react-json-view';
 import { JsonView, allExpanded, darkStyles, defaultStyles } from 'react-json-view-lite';
 
 import QueriesTag from "./components/Queries/QueriesTag";
 
 function App() {
+  const apiUrl = process.env.REACT_APP_API_URL;
+
   const [jsonFile, setJsonFile] = useState(null)
   const [selectedFilename, setSelectedFilename] = useState("")
   const [results, setResults] = useState({});
@@ -26,14 +27,14 @@ function App() {
     formData.append('json-file', uploadedFile[0])
 
     try {
-      const storeFileResponse = await fetch('http://localhost:4000/api/store-file', {
+      const storeFileResponse = await fetch(`${apiUrl}/api/store-file`, {
         method: 'POST',
         headers: {
           'Accept': 'application/json'
         },
         body: formData
       })
-      
+
       if (false == storeFileResponse.ok) {
         const errorMessage = await storeFileResponse.text();
         throw new Error(`File storage failed: ${errorMessage}`);
@@ -42,7 +43,7 @@ function App() {
       console.log('File stored successfully:', storeFileResponse);
 
       //2. send request to get recommended queries
-      const response = await fetch('http://localhost:4000/api/query-recommendations', {
+      const response = await fetch(`${apiUrl}/api/query-recommendations`, {
         method: 'POST',
         headers: {
           'Accept': 'application/json',
@@ -51,7 +52,7 @@ function App() {
       })
 
       const { data } = await response.json()
-      
+
       setRecommendedQueries(data)
 
     } catch (error) {
@@ -67,7 +68,7 @@ function App() {
     formData.append('query', queryInput)
 
     try {
-      const response = await fetch('http://localhost:4000/api/query-json', {
+      const response = await fetch(`${apiUrl}/api/query-json`, {
         method: 'POST',
         headers: {
           'Accept': 'application/json',
