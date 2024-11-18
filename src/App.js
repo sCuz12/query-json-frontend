@@ -105,7 +105,7 @@ function App() {
 
 
   return (
-    <div className="App">
+    <div className="App ">
       <header className="App-header">
         <Container className="w-full main-container">
           <Title align="center" style={{ marginBottom: '20px' }}>JSON Query Tool</Title>
@@ -114,7 +114,6 @@ function App() {
 
             <div className='flex flex-col gap-1 p-4 border rounded-lg shadow-xl'>
               <p className='flex items-start justify-start text-lg font-bold' >File</p>
-              <Divider style={{ borderTop: '0.1px solid gray' }} my="lg" />
               <FileUpload
                 onFileUpload={handleFileUpload}
                 fileName={selectedFilename}
@@ -123,7 +122,7 @@ function App() {
             {/*Recommended Queries*/}
             <div className="flex flex-col">
               {recommendedQueries && recommendedQueries.length > 0 && (
-                <p className="items-start justify-start text-lg font-bold">Generated Quries</p>
+                <p className="items-start justify-start text-lg font-bold">Recommended Queries</p>
               )}
               <div className="grid w-full grid-cols-2 gap-2 xl:grid-cols-2 lg:grid-cols-2">
                 {recommendedQueries.map((item) => (
@@ -132,15 +131,17 @@ function App() {
               </div>
             </div>
             {/*Query Editor box*/}
-            <div className='flex flex-col gap-1 p-4 border rounded-lg shadow-xl'>
-              <p className='flex items-start justify-start text-lg font-bold' >Query</p>
-              <Divider style={{ borderTop: '0.1px solid gray' }} my="lg" />
-              <QueryEditor
-                queryInput={queryInput}
-                setQueryInput={setQueryInput}
-                onSubmitQuery={handleQuerySubmit}
-              />
-            </div>
+            {recommendedQueries && recommendedQueries.length >0 && (
+                <div className='flex flex-col gap-1 p-4 border rounded-lg shadow-xl'>
+                  <p className='flex items-start justify-start text-lg font-bold' >Query</p>
+                  <Divider style={{ borderTop: '0.1px solid gray' }} my="lg" />
+                  <QueryEditor
+                      queryInput={queryInput}
+                      setQueryInput={setQueryInput}
+                      onSubmitQuery={handleQuerySubmit}
+                  />
+                </div>
+            )}
 
             <div className="flex w-full border rounded-xl bg-[#002b36]">
               {results && results.length > 0 && (

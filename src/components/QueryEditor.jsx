@@ -20,6 +20,7 @@ export default function QueryEditor({queryInput , setQueryInput,onSubmitQuery}) 
             {queryInput != "" && (
                 <div className={"flex w-full items-start justify-start"}>
                     <Button
+                        color="#81A0FF"
                         leftSection={<IconPlayerPlay size={14} />}
                         onClick={onSubmitQuery}
                     >

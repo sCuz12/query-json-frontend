@@ -3,7 +3,7 @@ import {Badge} from "@mantine/core";
 
 const QueriesTag = ({query,onClick}) => {
     return (
-        <div className="hover:cursor-pointer shadow shadow-2xl bg-gray-100 rounded-xl p-1 "
+        <div className="hover:cursor-pointer shadow shadow-2xl bg-gray-100 rounded-xl p-1 hover:bg-[#81A0FF] "
                onClick={()=>{onClick(query)}}
         >
             <p className={"text-sm italic"}>{query}</p>
