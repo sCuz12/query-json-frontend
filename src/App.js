@@ -4,9 +4,9 @@ import FileUpload from './components/FileUpload';
 import { Container, Divider, Title } from '@mantine/core';
 import QueryEditor from './components/QueryEditor';
 
-import { JsonView, allExpanded, darkStyles, defaultStyles } from 'react-json-view-lite';
-
+import JsonView from '@uiw/react-json-view';
 import QueriesTag from "./components/Queries/QueriesTag";
+import { darkTheme } from '@uiw/react-json-view/dark';
 
 function App() {
   const apiUrl = process.env.REACT_APP_API_URL;
@@ -145,10 +145,12 @@ function App() {
 
             <div className="flex w-full border rounded-xl bg-[#002b36]">
               {results && results.length > 0 && (
-                <div className='w-full text-sm results-box'>
+                <div className='w-full text-sm'>
                   <Title order={4} style={{ color: 'white' }}>Results</Title>
                   {/*<ReactJson src={results} theme="monokai" collapsed={true} enableClipboard={true} />*/}
-                  <JsonView data={results} shouldExpandNode={allExpanded} style={darkStyles} />
+                  {/*<JsonView data={results} shouldExpandNode={allExpanded} style={darkStyles} />*/}
+                  <JsonView style={darkTheme} value={results}/>
+
                 </div>
               )}
             </div>
