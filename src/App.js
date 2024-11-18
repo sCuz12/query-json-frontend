@@ -124,7 +124,7 @@ function App() {
               {recommendedQueries && recommendedQueries.length > 0 && (
                 <p className="items-start justify-start text-lg font-bold">Recommended Queries</p>
               )}
-              <div className="grid w-full grid-cols-2 gap-2 xl:grid-cols-2 lg:grid-cols-2">
+              <div className="grid w-full grid-cols-2 gap-4 xl:grid-cols-2 lg:grid-cols-2">
                 {recommendedQueries.map((item) => (
                   <QueriesTag onClick={recommendedQueryClicked} query={item} />
                 ))}
