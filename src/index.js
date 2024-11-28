@@ -8,7 +8,6 @@ import {createTheme,MantineProvider} from '@mantine/core'
 import '@mantine/dropzone/styles.css';
 // core styles are required for all packages
 import '@mantine/core/styles.css';
-import 'react-json-view-lite/dist/index.css';
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
